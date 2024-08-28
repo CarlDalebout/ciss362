@@ -17,11 +17,26 @@ std::stack<int> getStack(int x)
 
 
 
-int findMax(std::stack<int> x)
+int findMax(std::stack<int> x, int size)
 {
-    for(int i = 0; i < x.size(); i++)
+    std::stack<int> temp = x;
+    int max = temp.top();
+    int maxIndex = 0;
+    for(int i = 0; i < size; i++)
     {
-
+        if(max > temp.top())
+        {
+            temp.pop();
+        }
+        else if(max < temp.top())
+        {
+            max = temp.top();
+            maxIndex = i;
+        }
+        else
+        {
+            
+        }
     }
     return -999;
 }
@@ -30,7 +45,7 @@ std::stack<int> pancake(std::stack<int> x)
 {
     for(int i = 0; i < x.size(); i++)
     {
-        
+     int j = findMax(x, x.size()-i);   
     }
     return x;
 }
