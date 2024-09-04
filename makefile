@@ -22,7 +22,6 @@ push:
 	git add .
 	git commit
 	git push origin main
-p:
-	git add .
-	git commit
-	git push origin main
+
+pull:
+	git pull origin main
