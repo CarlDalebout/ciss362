@@ -1,0 +1,42 @@
+Let $x,y$ be words in $\Sigma^*$ with $|x| = n + 1$.
+
+We have the following:
+\begin{align*}
+           |x| &= n + 1                                                   & & \tag{a} \\ 
+\THEREFORE |x| &\geq 1 \\
+\THEREFORE |x| &\neq 0 \\
+\THEREFORE x &\neq \answerbox{?}                                          & & \text{by Q2} \\
+\THEREFORE x &= x'x'' \text{ for some } x' \in \Sigma, \ x'' \in \Sigma^* & & \text{by \answerbox{?}} \tag{b} \\
+\THEREFORE |x| &= 1 + |x''| \text{ for some } x'' \in \Sigma^*            & & \text{by \answerbox{?}} \\
+\THEREFORE n + 1 &= 1 + |x''| \text{ for some } x'' \in \Sigma^*          & & \text{by (a)} \\
+\THEREFORE |x''| &= n \text{ for some } x'' \in \Sigma^*
+\end{align*}
+
+Therefore for some $x' \in \Sigma$ and $x'' \in \Sigma^*$
+we have the following:
+\begin{align*}
+(xy)^R
+&= \left( \answerbox{?}x'' y \right)^R                      & & \text{by (b)} \\
+&= (\answerbox{?} \cdot x''y)^R                                               \\
+&= (x''y)^R \cdot (\answerbox{?})^R                         & & \text{by $P(1)$}\\
+&= \left( y^R \cdot (x'')^R \right) \cdot (\answerbox{?})^R & & \text{by $P(n)$} \\
+&= y^R \cdot \left( (x'')^R \cdot (\answerbox{?})^R \right) & & \text{by \answerbox{?}}\\
+&= y^R \cdot \left( \answerbox{?}x'' \right)^R              & & \text{by \answerbox{?}}\\
+&= \answerbox{?}^R \cdot \answerbox{?}^R                    & & \text{by (b)} 
+\end{align*}
+Hence $P(n+1)$ holds.
+\qed
+
+
+\textsc{Note.}
+The intuition behind the proof is that 
+given $x$ of length $n + 1$,
+we cut it up into $x'$ and $x''$ of lengths 1 and $n$.
+We then using the inductive hypothesis $P(1)$ and $P(n)$.
+Read over the proof again and make sure the see the strategy
+in the proof.
+Writing proofs formally is one thing.
+Understanding the strategy in a proof is another.
+Only by studying lots of proofs and understanding their strategy
+then will you really understand how to construct convincing proofs
+of your own.

@@ -1,0 +1,77 @@
+%\makeatletter
+%\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+%\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+%\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+%\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+%\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+%\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+%\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+%\makeatother
+
+\input{myassignmentpreamble}
+\input{yliow}
+\input{ciss362}
+\textwidth=6in
+
+\renewcommand\TITLE{Assignment a03}
+\newcommand\tf{T or F or M}
+\newcommand\answerbox[1]{\textbox{#1}}
+\newcommand\codebox[1]{\begin{console}#1\end{console}}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\textred{\ding{51}}}
+\newcommand{\xmark}{\textred{\ding{55}}}
+
+\newcounter{qc}
+\newcommand\nextq{
+%\newpage
+\addtocounter{qc}{1}
+Q{\theqc}.
+}
+
+\DefineVerbatimEnvironment%
+ {answercode}{Verbatim}
+ {frame=single}
+
+\newenvironment{largebox}[1]{%
+ \boxparone{#1}
+}
+{}
+
+
+
+
+\usepackage{environ}
+\let\oldquote=\quote
+\let\endoldquote=\endquote
+\let\quote\relax
+\let\endquote\relax
+
+\NewEnviron{answerlong}%
+  {\global\let\tmp\BODY\aftergroup\doboxpar}
+
+\newcommand\doboxpar{%
+  \let\quote=\oldquote
+  \let\endquote=\endoldquote
+  \boxpar{\tmp}
+}
+
+
+
+
+
+
+
+\newenvironment{mcq}[7]%
+{% begin code
+#1 \dotfill{#2}
+ \begin{tightlist}
+ \item[(A)] #3
+ \item[(B)] #4
+ \item[(C)] #5
+ \item[(D)] #6
+ \item[(E)] #7 
+ \end{tightlist}
+}%
+{% end code
+} 
