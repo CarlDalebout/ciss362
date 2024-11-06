@@ -1,0 +1,181 @@
+\input{thispreamble.tex}
+
+\renewcommand\AUTHOR{John Doe}
+
+\begin{document}
+\topmatter
+
+\textsc{Objectives}
+\begin{itemize}
+\li Design context-free grammars.
+\li Design PDA.
+\end{itemize}
+
+
+For questions asking you show an operation on context-free languages
+language is closed, you need not prove your construction is correct.
+(But you are welcome to do so. Most of such proofs, if not immediate,
+is by induction.)
+If the question does not say so, you can choose to give a PDA or a
+context-free grammar.
+For a PDA, draw the PDA state diagram and give the formal definition.
+
+Study the solutions to the following questions in the textbook:
+2.3, 2.4 (a) and (d), 2.6(a) and (c), 2.7, 2.8.
+
+Here are the questions you should work.
+Some questions have solutions (either from
+the book or I have written up the solution).
+\begin{myenum}
+\li Sipser 2.1. Q1. Solution to 2.1(b) is provided. Study it carefully. 
+\li Sipser 2.2. Q2. You may assume that $\{a^nb^nc^n \mid n \geq 0\}$ is not a
+context-free language.
+\li Sipser 2.3. Solution is provided in the textbook. Study it carefully.
+\li Sipser 2.4. Q3. Solutions to 2.4(a) and 2.4(d) are provided in the textbook.
+Study it carefully.
+\li Sipser 2.5. Q4.
+\li Sipser 2.6. Q5. Solutions to 2.6(a) and 2.6(c) are provided in the textbook. Study it carefully.
+\li Sipser 2.7. Solution to 2.7 is provided in the textbook. Study it carefully.
+\li Sipser 2.8. Solution to 2.8 is provided in the textbook. Study it carefully.
+\li Sipser 2.9. Q6.
+\li Sipser 2.10. Q7.
+\li Sipser 2.13. Q8. Solution to 2.13(a) is provided. 
+\end{myenum}
+
+%------------------------------------------------------------------------------
+\newpage
+\textsc{How to draw a state diagram}
+
+Here's an example showing you how to draw the elements of a state diagram.
+Also, look at the solution to 1.3 below.
+
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial]   (q0) at (0, 0) {$q_0$};
+    \node[state]           (q1) at (4, 0) {$q_1$};
+    \node[state,accepting] (q2) at (8, 0) {$q_2$};
+    \node[state]           (q3) at (0,-4) {$q_3$};
+    \node[state]           (q4) at (4,-4) {$q_4$};
+
+    \node[state]           (q5) at (12, 0) {$q_5$};
+    \node[state]           (q6) at (12,-4) {$q_6$};
+
+    \path[->]
+    (q0) edge                node {$1$} (q1)    
+    (q1) edge [bend left=15] node {$0$} (q2)
+    (q0) edge [left]  node {$\alpha$} (q3)
+    (q1) edge [right] node {$\beta$}  (q4)
+    (q1) edge [loop above]   node {$1$} (q1)
+    (q2) edge [loop below]   node {$0$} ()
+    (q2) edge [bend left=15] node {$1$} (q1)
+    (q3) edge [loop right]   node {$0,1$} ()
+    (q4) edge [loop left]    node {$2,3$} ()
+    (q5) edge [right, bend left=30]    node {$\gamma$} (q6)
+    (q5) edge [right, bend left=60]    node {$\ep$}    (q6)
+    (q5) edge [left, bend right=30]    node {$\delta$} (q6)
+    ;
+  \end{tikzpicture}
+\end{center}
+
+For more information on drawing state diagrams go to my tutorials at
+\url{http://yliow.github.io} and 
+look for \verb!latex-automata.pdf!:
+Let me know if you have any questions about drawing state diagram.
+
+
+%------------------------------------------------------------------------------
+\newpage
+\textsc{How to write a context-free grammar}
+
+Here's a context-free grammar, $G$, for our $\{ a^n b^n \mid n \geq 0 \}$:
+\[
+G:
+\begin{cases}
+S \rightarrow \ep \\
+S \rightarrow aSb
+\end{cases}
+\]
+Usually we combine the productions for the same variable like this:
+\[
+G:
+S \rightarrow \ep \mid aSb
+\]
+Here's an example of a longer grammar:
+\[
+G_1:
+\begin{cases}
+S \rightarrow \ep \mid TU \\
+T \rightarrow a \mid   aT \\
+U \rightarrow \ep \mid bUcc
+\end{cases}
+\]
+And remember to list the starting variable first.
+
+%------------------------------------------------------------------------------
+\newpage
+Q1. Sipser 2.1. 
+
+\textsc{Solution}.
+
+\input{q01.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q2. Sipser 2.2.
+
+\textsc{Solution}.
+
+\input{q02.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q3. Sipser 2.4.(b), (c), (e), (f)
+
+\textsc{Solution}.
+
+\input{q03.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q4. Sipser 2.5. For each questions, draw PDA state diagram and
+informally describe how it words.
+You do \textit{not} need to give the formal definition.
+
+\textsc{Solution}.
+
+\input{q04.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q5. Sipser 2.6 (b) and (d).
+
+\textsc{Solution}.
+
+\input{q04.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q6. Sipser 2.9.
+
+\textsc{Solution}.
+
+\input{q05.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q7. Sipser 2.10. (Hint: Look at the word \lq\lq or".)
+
+\textsc{Solution}.
+
+\input{q07.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q8. Sipser 2.13.
+
+\textsc{Solution}.
+
+\input{q08.tex}
+
+\end{document}

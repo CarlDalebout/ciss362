@@ -1,0 +1,231 @@
+
+We want to show that if $A$ is regular, then $A^R$ is also regular.
+
+Let $M$ be a DFA for $A$:
+
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial]   (q0) at (0, 1) {$q_0$};
+    
+    \node[state]           (q1) at (2, 3) {$q_1$};
+    \node[state]           (q2) at (2, 1) {$q_2$};
+    \node[state]           (q3) at (2,-1) {$q_3$};
+
+    \node[state]           (q5) at (4, 3) {$q_4$};
+    \node[state]           (q6) at (4, 1) {$q_5$};
+    \node[state]           (q7) at (4,-1) {$q_6$};
+
+    \node[]                (q9) at (6, 3) {$...$};
+    \node[]                (q10) at (6, 1) {$...$};
+    \node[]                (q11) at (6, -1) {$...$};
+
+    \node[state,accepting]           (q13) at (8, 3) {$q_7$};
+    \node[state,accepting]           (q14) at (8, 1) {$q_8$};
+    \node[state,accepting]           (q15) at (8, -1) {$q_9$};
+
+    \node[state,white]   (s) at (10, 1) {};
+    %\node[state,initial]   (s) at (10, 1) {$s$};
+
+    \path[->]    
+    (q0) edge                node {} (q1)
+    (q0) edge                node {} (q2)
+    (q0) edge                node {} (q3)
+    
+    (q1) edge                node {} (q5)
+    (q2) edge                node {} (q6)
+    (q3) edge                node {} (q7)
+    
+    (q5) edge                node {} (q9)
+    (q6) edge                node {} (q10)
+    (q7) edge                node {} (q11)
+
+    (q9) edge                node {} (q13)
+    (q10) edge               node {} (q14)
+    (q11) edge               node {} (q15)
+    ;
+  \end{tikzpicture}
+\end{center}
+Suppose $M$ accepts the string $abaab$.
+That means there's a path from the initial state of $M$ to an accept state that travels along a sequence of transitions
+labeled $a, b, a, a, b$.
+Suppose the accept state is $q_7$.
+Then traveling in the reverse direction of this path, we will see the symbols $b,a,a,b,a$, going from $q_7$ to $q_0$.
+Therefore we will need to construction an automata from $M$ where the direction of the transitions are reversed.
+For this to be a valid automata, we can have only one start state.
+$M$ might have multiple accept states.
+We cannot simply choose anyone of the accept states of $M$.
+That's not a problem: we will use nondeterminism to allow us to try all the accept states:
+
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=,initial where=right]
+    
+    \node[state,accepting]   (q0) at (0, 1) {$q_0$};
+    
+    \node[state]           (q1) at (2, 3) {$q_1$};
+    \node[state]           (q2) at (2, 1) {$q_2$};
+    \node[state]           (q3) at (2,-1) {$q_3$};
+
+    \node[state]           (q5) at (4, 3) {$q_4$};
+    \node[state]           (q6) at (4, 1) {$q_5$};
+    \node[state]           (q7) at (4,-1) {$q_6$};
+
+    \node[]                (q9) at (6, 3) {$...$};
+    \node[]                (q10) at (6, 1) {$...$};
+    \node[]                (q11) at (6, -1) {$...$};
+
+    \node[state]           (q13) at (8, 3) {$q_7$};
+    \node[state]           (q14) at (8, 1) {$q_8$};
+    \node[state]           (q15) at (8, -1) {$q_9$};
+
+    \node[state,initial]   (s) at (10, 1) {$s$};
+
+    \path[->]    
+    (q1) edge                node {} (q0)
+    (q2) edge                node {} (q0)
+    (q3) edge                node {} (q0)
+    
+    (q5) edge                node {} (q1)
+    (q6) edge                node {} (q2)
+    (q7) edge                node {} (q3)
+    
+    (q9) edge                node {} (q5)
+    (q10) edge                node {} (q6)
+    (q11) edge                node {} (q7)
+
+    (q13) edge                node {} (q9)
+    (q14) edge               node {} (q10)
+    (q15) edge               node {} (q11)
+
+    (s) edge                node[above right] {$\ep$} (q13)
+    (s) edge               node[above] {$\ep$} (q14)
+    (s) edge               node {$\ep$} (q15)
+    ;
+  \end{tikzpicture}
+\end{center}
+
+Note that in the new automata, the accept state is $q_0$.
+That's the general idea.
+We are now ready to construction our automata.
+
+Let $M = (\Sigma, Q, q_0, F, \delta)$ be a DFA accepting $A$.
+Define an NFA $N = (\Sigma, Q^R, s, F^R, \delta^R)$ where
+$s$ is a new state (i.e., $s \not\in Q$),
+$Q^R = Q \cup \{s\}$, $F^R = \{q_0\}$, and
+\[
+\delta^R: Q\cup\{s\} \times \Sigma_\ep \rightarrow P(Q\cup \{s\})
+\]
+is the transition function that behaves as stated above, i.e., they are
+basically transitions from $M$ but with their directions reversed.
+Furthermore there are new transitions from $s$ to all states in $F$.
+
+First of all, in $N$, at state $s$, there are $\ep$--transitions to all the states in $F$.
+Therefore
+\[
+\delta^R(s, \ep) = F
+\]
+
+Next, To describe the transitions of $N$ which are the reverse of transitions of $M$,
+if in the DFA $M$, we have
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=,initial where=right]
+    \node[state]           (q1) at (0, 0) {$q'$};
+    \node[state]           (q2) at (2, 0) {$q$};
+    \path[->]    
+    (q1) edge                node {$c$} (q2)
+    ;
+  \end{tikzpicture}
+\end{center}
+the new automata $N$ will have
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=,initial where=right]
+    \node[state]           (q1) at (0, 0) {$q'$};
+    \node[state]           (q2) at (2, 0) {$q$};
+    \path[->]    
+    (q2) edge                node[above]  {$c$} (q1)
+    ;
+  \end{tikzpicture}
+\end{center}
+However, the definition of $\delta^R$ is not just
+\begin{align*}
+  \delta^R: Q \cup\{s\} \times \Sigma_\ep &\rightarrow P(Q\cup \{s\}) \\
+  \delta^R(q, c)
+  &=
+  \begin{cases}
+    \{q'\} & \text{ if $\delta(q', c) = q$} \\
+    F      & \text{ if $q = s$ and $c = \ep$}
+    \end{cases}
+\end{align*}
+for two reasons.
+The first correction is due to the fact that $M$ we might have
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=,initial where=right]
+    \node[state]           (q1) at (0, 1) {$q'$};
+    \node[state]           (q3) at (0, -1) {$q''$};
+    \node[state]           (q2) at (2, 0) {$q$};
+    \path[->]    
+    (q1) edge                node {$c$} (q2)
+    (q3) edge                node {$c$} (q2)
+    ;
+  \end{tikzpicture}
+\end{center}
+In this case
+\[
+\delta^R(q, c) = \{q', q''\}
+\]
+More generally
+\[
+\delta^R(q, c) = \{ q' \in Q \mid \delta(q', c) = q \}
+\]
+Furthermore, this behavior of $\delta^R$ only applies to the case where $q \in Q$ and $c \in \Sigma$.
+Therefore the transition function of the new automata should be modified to this:
+\begin{align*}
+  \delta^R: Q \cup\{s\} \times \Sigma_\ep &\rightarrow P(Q\cup \{s\}) \\
+  \delta^R(q, c)
+  &=
+  \begin{cases}
+    \{ q' \in Q \mid \delta(q', c) = q \} &  \text{ if $q \neq s$ and $c \neq \ep$} \\
+    F      & \text{ if $q = s$ and $c = \ep$}
+    \end{cases}
+\end{align*}
+
+The second correction is that $\delta^R$ is not complete since
+it is not defined when $q = s$ and $c \neq \ep$ and when $q \neq s$ and $c = \ep$.
+From the diagram above, you see that in the new automata there are no $\ep$--transitions other than
+from state $s$.
+In other word, we will need to fill in two blanks here:
+\[
+\delta^R(q, c)
+=
+\begin{cases}
+  \{ q' \in Q \mid \delta(q', c) = q \} &  \text{ if $q \neq s$ and $c \neq \ep$} \\
+  F      & \text{ if $q = s$ and $c = \ep$} \\
+  ?      & \text{ if $q \neq s$ and $c = \ep$} \\
+  ?      & \text{ if $q = s$ and $c \neq \ep$}
+\end{cases}
+\]
+From our diagram above, you see that
+$\delta^R(q, c) = \{\}$ for the last two cases.
+The complete definition of $\delta^R$ is therefore
+\begin{align*}
+  \delta^R: Q \cup\{s\} \times \Sigma_\ep &\rightarrow P(Q\cup \{s\}) \\
+  \delta^R(q, c)
+  &=
+  \begin{cases}
+    \{ q' \in Q \mid \delta(q', c) = q \} & \text{if $q \neq s$ and $c \neq \ep$} \\ 
+    F                                     & \text{if $q = s$ and $c = \ep$} \\
+    \emptyset                             & \text{otherwise}
+    \end{cases}
+\end{align*}
+\qed
+
+\textsc{Notes}. Here are some DIYs.
+\begin{enumerate}
+\item Prove that if $w \in \Sigma^*$, then
+  \[
+  \delta^{R*}(s, w) - \{s\} = \{q \in Q \mid \delta^*(q, w^R) \in F\}
+  \]
+  (Hint: Induction on $|w|$.)
+\item Prove formally that $L(N) = L(M)$.
+
+\end{enumerate}

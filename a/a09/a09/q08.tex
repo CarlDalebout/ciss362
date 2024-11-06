@@ -1,0 +1,10 @@
+(a) $T$ derives strings containing any number of $0$s (including none) and
+exactly one $\#$.
+Therefore $TT$ derives strings with any number of $0$s and exactly two
+$\#$s.
+$U$ derives strings of the form $0^n \# 0^{2n}$.
+Hence $L(G)$ contains strings with any number of $0$s and exactly two
+$\#$ or strings of the form $0^n \# 0^{2n}$, i.e.,
+\[
+L(G) = L(0^* \# 0^* \# 0^*) \cup \{0^n \# 0^{2n} \mid n \geq 0\} 
+\]
