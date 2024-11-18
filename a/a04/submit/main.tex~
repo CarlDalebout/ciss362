@@ -1,0 +1,411 @@
+\input{myassignmentpreamble}
+\input{yliow}
+\input{ciss362}
+\renewcommand\TITLE{Assignment 4}
+
+% CHANGE THE NEXT TWO LINES
+\renewcommand\AUTHOR{John Doe ?}
+\renewcommand\EMAIL{jdoe1@gmail.com ?}
+
+\begin{document}
+\topmatter
+
+We will prove something about languages.
+
+First let me fix (formally) various concepts.
+We fix an alphabet $\Sigma$ throughout.
+For the following $x,y,z$ are words in $\Sigma^*$.
+The following are some basic facts about the word concatenation operator.
+\begin{enumerate}
+\item[C1] $xy$ is a word in $\Sigma^*$
+\item[C2] $(xy)z$ can be rewritten as $x(yz)$
+\item[C3] $x(yz)$ can be rewritten as $(xy)z$
+\item[C4] $\ep x$ can be rewritten as $x$
+\item[C5] $x$ can be rewritten as $\ep x$
+\item[C6] $x\ep$ can be rewritten as $x$
+\item[C7] $x$ can be rewritten as $x\ep$
+\item[C8] If $x \in \Sigma^*$ is not $\ep$, then 
+$x = x'x''$ for some $x' \in \Sigma$ and $x'' \in \Sigma^*$.
+
+[This is formalizing the idea that 
+\lq\lq a nonempty word always begins with a symbol from the alphabet''.
+It's extremely important to be able to speak the formal
+mathematical language and yet be able to translate the formal 
+syntax into something simple.]
+\end{enumerate}
+
+\newpage
+First we define formally the length function.
+Let $x$ be a word over $\Sigma^*$.
+\begin{enumerate}
+\item[L1] If $x = \ep$, then we define
+\[
+|x| = 0
+\]
+\item[L2] If $x \neq \ep$, then $x = x' \cdot x''$ where
+$x \in \Sigma$, i.e. $x$ is a symbol in our alphabet
+and $x'' \in \Sigma^*$, i.e. $x''$ is a word over $\Sigma$
+(this is because of C8).
+We define 
+\[
+|x| = 1 + |x''|
+\]
+\end{enumerate}
+As an example, let me compute $|aba|$.
+\begin{align*}
+|aba| 
+&= |a \cdot ba|                           \\
+&= 1 + |ba|              & & \text{by L2} \\
+&= 1 + |b \cdot a|       & & \\
+&= 1 + 1 + |a|           & & \text{by L2} \\
+&= 1 + 1 + |a \cdot \ep| & &              \\
+&= 1 + 1 + 1 + |\ep|     & & \text{by L2} \\
+&= 1 + 1 + 1 + 0         & & \text{by L1} \\
+&= 3 
+\end{align*}
+
+You may assume following properties about the length function:
+\begin{enumerate}
+\item[L3] $|x| \geq 0$
+\item[L4] $|x|$ is an integer 
+\end{enumerate}
+
+Note that the \lq\lq other definition'' of length 
+\[
+|x| = \text{count of the number of symbols in $x$}
+\]
+although easier to understand (for human beings) is not as precise:
+\lq\lq the number of symbols in $x$'' is not strictly mathematical.
+To illustrate this very clearly, the definition above
+\[
+|x| =
+\begin{cases}
+0       & \text{ if $x = \ep$} \\
+1 + |z| & \text{ if $x = yz$ for $y \in \Sigma, z \in \Sigma^*$}
+\end{cases}
+\]
+is recursive (because $|x|$ depends on $|z|$) and hence can be programmed
+immediately in C++:
+
+\begin{Verbatim}[frame=single]
+#include <iostream>
+
+int len(char * p)
+{
+    if (p[0] == '\0') // BASE CASE
+    {
+        return 0;
+    }
+    else // RECURSIVE CASE
+    {
+        return 1 + len(p + 1);
+    }
+}
+
+int main()
+{
+    char x[] = "abc";
+    std::cout << len(x) << std::endl;
+    return 0;
+}
+\end{Verbatim}
+
+This is the reason why recursive thinking is so important.
+A recursive fact can be proven to be absolutely true using
+Math because of the presence of mathematical induction.
+After it's been proven, you can immediately program it using
+recursion.
+
+On the other hand, 
+\[
+|x| = \text{count of the number of symbols in $x$}
+\]
+is more like performing a scan of the characters manually and therefore looks
+executing a loop:
+\begin{Verbatim}[frame=single]
+#include <iostream>
+
+int len(char * p)
+{
+    int count = 0;
+    while (p[count] != '\0')
+    {
+        count++;
+    }
+    return count;
+}
+
+int main()
+{
+    char x[] = "abc";
+    std::cout << len(x) << std::endl;
+    return 0;
+}
+\end{Verbatim}
+
+There is no corresponding general mathematical concept of loops
+and therefore no corresponding general mathematical proof technique to prove
+correctness of algorithms in a concise manner.
+
+Of course for something as simple of the above, it's no big deal either way.
+However for really complex and critical systems, correctness must be
+proven or at least verified to some extent.
+
+Read the above two definitions and then read their corresponding code.
+Make sure you really understand the difference between the two.
+Learn to love recursion.
+
+
+
+
+\newpage
+Now for the reverse function. 
+The {\bf reverse function} 
+$(\cdot)^R$ on a word $x$ is defined as follows:
+\begin{enumerate}
+\item[R1] If $x = \ep$, we define
+\[
+\ep^R = \ep
+\]
+\item[R2] If $x \neq \ep$, then $x = x'\cdot x''$ where
+$x' \in \Sigma$, i.e., $x'$ is a symbol in our alphabet $\Sigma$
+and $x'' \in \Sigma^*$, i.e., $x''$ is a word over $\Sigma$ (this is by C8). 
+We define
+\[
+x^R = (x'')^R \cdot x'
+\]
+\end{enumerate}
+As an example, let me compute $(abb)^R$.
+\begin{align*}
+(abb)^R
+&= (a \cdot bb)^R                                   \\
+&= (bb)^R \cdot a                  & & \text{by R2} \\
+&= \left( (b\cdot b)^R \right) \cdot a & &              \\
+&= \left( b^R \cdot b \right) \cdot a             & & \text{by R2} \\
+&= \left( (b\cdot \ep)^R \cdot b \right) \cdot a  & &              \\
+&= (\ep)^R \cdot b \cdot b \cdot a & & \text{by R2} \\
+&= \ep \cdot b \cdot b \cdot a     & & \text{by R1} \\
+&= bba                                              \\
+\end{align*}
+
+In terms of C++, using the above recursive definition of the
+reverse function we have this (I'm using C++ strings for this example
+since cutting and concatenating strings are easier with the C++ string
+class):
+
+\begin{Verbatim}[frame=single]
+#include <iostream>
+#include <string>
+
+std::string reverse(const std::string & s)
+{
+    if (s == "") // BASE CASE
+    {
+        return "";
+    }
+    else // RECURSIVE CASE
+    {
+        char y = s[0];
+        std::string z = s.substr(1);
+        return reverse(z) + y;
+    }
+}
+
+int main()
+{
+    std::string x("abc");
+    std::cout << reverse(x) << std::endl;    
+    return 0;
+}
+\end{Verbatim}
+
+The other definition of reverse, i.e. \lq\lq the reverse of 
+$x$ is the word which is the same as $x$ but with the
+symbols in reverse order'' is not precise mathematically.
+The code would look something like this:
+\begin{Verbatim}[frame=single]
+#include <iostream>
+#include <string>
+
+std::string reverse(const std::string & s)
+{
+    std::string t = "";
+    for (size_t i = 0; i < s.length(); i++)
+    {
+        t.push_back(s[s.length() - i - 1]);
+    }
+    return t;
+}
+
+int main()
+{
+    std::string x("abc");
+    std::cout << reverse(x) << std::endl;
+    
+    return 0;
+}
+\end{Verbatim}
+
+
+
+
+\newpage
+Let $\Sigma$ be an alphabet.
+Let $x$ and $y$ be words in $\Sigma^*$.
+We want to prove that 
+\[
+P:
+\text{
+If $x,y$ are words in $\Sigma^*$, then
+$(xy)^R = y^R x^R$
+}
+\]
+Instead of proving $P$ directly, 
+we will prove this by mathematical induction,
+inducting on the length of $x$.
+Therefore we let $P(n)$ be this statement:
+\[
+P(n): 
+\text{
+If $x,y$ are words in $\Sigma^*$ with $|x| = n$, then
+$(xy)^R = y^R x^R$
+}
+\]
+Since the length of $x$ can be any integer $n \geq 0$,
+our base case is when $n = 0$.
+
+
+\newpage
+Q1. We know that if $x = \ep$, then $|x| = 0$.
+Now for the converse:
+
+Prove the following:
+Let $x$ be a word in $\Sigma^*$.
+If $|x| = 0$, then $x = \ep$.
+
+\SOLUTION
+\input{q1.tex}
+
+
+
+
+\newpage
+Q2. Let $x$ be a word in $\Sigma^*$.
+Then 
+\[
+|x| \neq 0 \iff x \neq \ep
+\]
+
+\SOLUTION
+We already know that $|x| = 0 \iff x = \ep$ (see Q1).
+Hence
+\[
+|x| \neq 0 \iff x \neq \ep
+\]
+
+(You don't have to prove anything here. I've done everything.)
+
+
+
+
+\newpage
+Let's get back to the main problem.
+Recall that we are trying to prove
+\[
+P(n): 
+\text{
+If $x,y$ are words in $\Sigma^*$ with $|x| = n$, then
+$(xy)^R = y^R x^R$
+}
+\]
+Let's us go for the base case.
+
+Q3. 
+Prove that $P(0)$ is true.
+
+\SOLUTION
+\input{q3.tex}
+
+
+
+
+\newpage
+Recall that we are trying to prove
+\[
+P(n): 
+\text{
+If $x,y$ are words in $\Sigma^*$ with $|x| = n$, then
+$(xy)^R = y^R x^R$
+}
+\]
+We are done with the base case.
+The only thing left is the inductive case.
+Note that there are two forms of mathematical induction.
+To prove that $P(n)$ is true for all $n \geq 0$.
+You can prove the following two statesments hold:
+\begin{enumerate}
+\item $P(0)$ is true
+\item If $P(n)$ is true, then $P(n+1)$ is true.
+\end{enumerate}
+Or you can prove the following holds:
+\begin{enumerate}
+\item $P(0)$ is true
+\item If $P(0), P(1), ..., P(n)$ are true, then $P(n+1)$ is true.
+\end{enumerate}
+The second form is called \lq\lq stronger'' since you
+have more assumptions to work with, 
+i.e. you assume $P(0), P(1), ..., P(n)$ are all true.
+That's why the second form of mathematical induction is called
+the strong form of induction.
+The first form is called the weak form.
+It turns out that they are equally powerful.
+We will be using the strong form for the proof
+of our inductive case.
+
+
+
+
+\newpage
+Q4. 
+Recall that 
+\[
+P(n): 
+\text{
+If $x,y$ are words in $\Sigma^*$ with $|x| = n$, then
+$(xy)^R = y^R x^R$
+}
+\]
+
+Let $n \geq 0$.
+Assume that $P(k)$ is true for $k = 0, 1, \ldots, n$.
+Prove that $P(n+1)$ is true.
+
+\SOLUTION
+\input{q4.tex}
+
+
+
+\newpage
+Altogether for the following statement:
+\[
+P(n): 
+\text{
+If $x,y$ are words in $\Sigma^*$ with $|x| = n$, then
+$(xy)^R = y^R x^R$
+}
+\]
+we have shown that
+\begin{enumerate}
+\item $P(0)$ is true
+\item If $P(0), P(1), \ldots, P(n)$ are true, then $P(n+1)$ is true.
+\end{enumerate}
+By mathematical induction, $P(n)$ must be true for all $n \geq 0$.
+Therefore the following must be true:
+
+If $x,y$ are words in $\Sigma^*$, then
+\[
+(xy)^R = y^R x^R
+\]
+QED.
+
+\end{document}
