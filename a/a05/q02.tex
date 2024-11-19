@@ -1,0 +1,80 @@
+(a.) %{w| the length of w is at most 5} \dot {w| every odd position of w is a 1}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+
+    \node[state,initial]   (q00)  at (0, 0)  {$q_00$};
+    \node[state]           (q01)  at (2, 0)  {$q_01$};
+    \node[state]           (q02)  at (4, 0)  {$q_02$};
+    \node[state]           (q03)  at (6, 0)  {$q_03$};
+    \node[state]           (q04)  at (8, 0)  {$q_04$};
+    \node[state]           (q05)  at (10, 0) {$q_05$};
+    \node[state]           (q06)  at (12, 0) {$q_06$};
+    
+
+    \node[state,accepting] (q10)  at (0, -4) {$q_10$};
+    \node[state,accepting] (q11)  at (2, -4) {$q_11$};
+    \node[state,accepting] (q12)  at (4, -4) {$q_12$};
+    \node[state]           (q13)  at (6, -4) {$q_13$};
+
+    \path[->]
+    (q00) edge                 node {$0,1$}      (q01)
+    (q00) edge [left]          node {$\epsilon$} (q10)
+    
+    (q01) edge                 node {$0,1$}      (q02)
+    (q01) edge [bend right=15] node {$\epsilon$} (q10)
+   
+    (q02) edge                 node {$0,1$}      (q03)
+    (q02) edge [bend right=15] node {$\epsilon$} (q10)
+   
+    (q03) edge                 node {$0,1$}      (q04)
+    (q03) edge [bend right=15] node {$\epsilon$} (q10)
+   
+    (q04) edge                 node {$0,1$}      (q05)
+    (q04) edge [bend right=15] node {$\epsilon$} (q10)
+   
+    (q05) edge                 node {$0,1$}      (q06)
+    (q05) edge [bend right=15] node {$\epsilon$} (q10)
+
+    (q06) edge [loop above]    node {$0,1$}      ()
+
+    %-----------------------------------------------------
+    (q10) edge                 node {$1$}        (q11)
+    
+    (q11) edge [bend left=15]  node {$0,1$}      (q12)
+    
+    (q12) edge                 node {$0$}        (q13)
+    (q12) edge [bend left=15]  node {$1$}        (q11)
+    
+    (q13) edge [loop above]    node {$0,1$}      (q11)
+    ;
+    
+  \end{tikzpicture}
+\end{center}
+
+
+(b.) %{w| w contains at least three 1s} \dot {}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial]   (q0)  at (0, 0)  {$q_0$};
+    \node[state]           (q1)  at (2, 0)  {$q_1$};
+    \node[state]           (q2)  at (4, 0)  {$q_2$};
+    \node[state]           (q3)  at (6, 0)  {$q_3$};
+    \node[state,accepting] (q4)  at (8, 0)  {$q_4$};
+    
+    \path[->]
+    (q0) edge [loop above]    node {$0$}        ()
+    (q0) edge                 node {$1$}        (q1)
+
+    (q1) edge [loop above]    node {$0$}        ()
+    (q1) edge                 node {$1$}        (q2)
+
+    (q2) edge [loop above]    node {$0$}        ()
+    (q2) edge                 node {$1$}        (q3)
+
+    (q3) edge [loop above]    node {$0$}        ()
+    (q3) edge                 node {$\epsilon$} (q4)
+    ;
+
+  \end{tikzpicture}
+\end{center}

@@ -1,0 +1,86 @@
+(a.) %{w| w contains at least three 1s}^{*}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+
+    \node[state,initial,accepting] (q0)  at (0, 0)  {$q_0$};
+    \node[state]                   (q1)  at (2, 0)  {$q_1$};
+    \node[state]                   (q2)  at (4, 0)  {$q_2$};
+    \node[state]                   (q3)  at (6, 0)  {$q_3$};
+    \node[state,accepting]         (q4)  at (8, 0)  {$q_4$};
+
+    \path[->]
+    (q0) edge                 node {$\epsilon$} (q1)
+    
+    (q1) edge [loop above]    node {$0$}        ()
+    (q1) edge                 node {$1$}        (q2)
+    
+    (q2) edge [loop above]    node {$0$}        ()
+    (q2) edge                 node {$1$}        (q3)
+    
+    (q3) edge [loop above]    node {$0$}        ()
+    (q3) edge                 node {$1$}        (q4)
+    
+    (q4) edge [loop above]    node {$0,1$}      ()
+    (q4) edge [bend left=45]  node {$\epsilon$} (q1)
+    ;
+    
+  \end{tikzpicture}
+\end{center}
+
+(b.) %{w| w contains at least two 0s and at most one 1}^{*}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial,accepting] (q0)  at (0, 0)   {$q_0$};
+    \node[state]                   (q1)  at (2, 0)   {$q_1$};
+    \node[state]                   (q2)  at (4, 0)   {$q_2$};
+    \node[state,accepting]         (q3)  at (6, 0)   {$q_3$};
+    \node[state]                   (q4)  at (2, -2)  {$q_4$};
+    \node[state]                   (q5)  at (4, -2)  {$q_5$};
+    \node[state,accepting]         (q6)  at (6, -2)  {$q_6$};
+    \node[state]                   (q7)  at (4, -4)  {$q_7$};
+    
+    \path[->]
+    (q0) edge                  node {$\epsilon$} (q1)
+    
+    (q1) edge                  node {$0$}        (q2)
+    (q1) edge [left]           node {$1$}        (q4)
+    
+    (q2) edge                  node {$0$}        (q3)
+    (q2) edge [left]           node {$1$}        (q5)
+    
+    (q3) edge [loop above]     node {$0$}        ()
+    (q3) edge [left]           node {$1$}        (q6)
+    (q3) edge [bend right=45]  node {$\epsilon$} (q1)
+    
+    (q4) edge                  node {$0$}        (q5)
+    (q4) edge [bend right=15]  node {$1$}        (q7)
+    
+    (q5) edge                  node {$0$}        (q6)
+    (q5) edge [left]           node {$1$}        (q7)
+    
+    (q6) edge [loop right]     node {$0$}        ()
+    (q6) edge [bend left=15]   node {$1$}        (q7)
+    (q6) edge [bend right=15]  node {$\epsilon$} (q1)
+    
+    (q7) edge [loop below]     node {$0,1$}      ()
+    
+    ;
+    
+  \end{tikzpicture}
+\end{center}
+
+(c.) %{}^{*}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial,accepting] (q0)  at (0, 0)  {$q_0$};
+    \node[state,accepting]         (q1)  at (2, 0)  {$q_1$};
+    
+    \path[->]
+    (q0) edge                  node {$\epsilon$} (q1)
+    (q1) edge [loop above]     node {$\epsilon$} ()
+    ;
+
+  \end{tikzpicture}
+\end{center}

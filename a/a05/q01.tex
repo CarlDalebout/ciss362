@@ -1,0 +1,94 @@
+(a.) %{w| w begins with a 1 and ends with a 0} \cup {w| w contains at least three 1s}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+
+    \node[state,initial]   (q0)  at (0, 0)  {$q_0$};
+    
+    \node[state]           (q00)  at (2, 2)  {$q_00$};
+    \node[state]           (q01)  at (4, 2)  {$q_01$};
+    \node[state,accepting] (q02)  at (6, 2)  {$q_02$};
+    
+    \node[state]           (q10)  at (2, -2)  {$q_10$};
+    \node[state]           (q11)  at (4, -2)  {$q_11$};
+    \node[state]           (q12)  at (6, -2)  {$q_12$};
+    \node[state,accepting] (q13)  at (8, -2)  {$q_13$};
+
+    \path[->]
+    (q0)  edge [bend left=30]  node {$\epsilon $} (q00)
+    (q0)  edge [bend right=30] node {$\epsilon $} (q10)
+
+    %--------------------------------------------------------    
+    (q00) edge              node {$1$}      (q01)
+   
+    (q01) edge [bend left=15] node {$0$}    (q02)
+    (q01) edge [loop above]   node {$1$}    ()
+   
+    (q02) edge [loop above]   node {$0$}    ()
+    (q02) edge [bend left=15] node {$1$}    (q01)
+
+    %--------------------------------------------------------    
+    (q10) edge [loop above]   node {$0$}    ()
+    (q10) edge                node {$1$}    (q11)
+   
+    (q11) edge [loop above]   node {$0$}    ()
+    (q11) edge                node {$1$}    (q12)
+   
+    (q12) edge [loop above]   node {$0$}    ()
+    (q12) edge                node {$1$}    (q13)
+
+    (q13) edge [loop above]   node {$0,1$} ()
+    ;
+    
+  \end{tikzpicture}
+\end{center}
+
+(b.) %{w| w contains the substring 0101 (i.e., w = x0101y for some x and y)} \cup {w| w doesn’t contain the substring 110}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+
+    \node[state,initial]   (q0)  at (0, 0)  {$q_0$};
+    
+    \node[state]           (q00)  at (0, 2)  {$q_00$};
+    \node[state]           (q01)  at (2, 2)  {$q_01$};
+    \node[state,accepting] (q02)  at (4, 2)  {$q_02$};
+    \node[state,accepting] (q03)  at (6, 2)  {$q_03$};
+    \node[state,accepting] (q04)  at (8, 2)  {$q_04$};
+    
+    \node[state,accepting] (q10)  at (0, -2)  {$q_10$};
+    \node[state,accepting] (q11)  at (2, -2)  {$q_11$};
+    \node[state,accepting] (q12)  at (4, -2)  {$q_12$};
+    \node[state]           (q13)  at (6, -2)  {$q_13$};
+
+    \path[->]
+    (q0)  edge [left] node {$\epsilon $} (q00)
+    (q0)  edge [left] node {$\epsilon $} (q10)
+
+    %--------------------------------------------------------    
+    (q00) edge                 node {$0$}   (q01)
+    (q00) edge [loop above]    node {$1$}   ()
+    
+    (q01) edge                 node {$0$}   (q02)
+    (q01) edge [loop above]    node {$0$}   ()
+    
+    (q02) edge                 node {$0$}   (q03)
+    (q02) edge [bend left=45]  node {$1$}   (q00)
+    
+    (q03) edge [bend left=45]  node {$0$}   (q01)
+    (q03) edge                 node {$1$}   (q04)
+    
+    (q04) edge [loop above]    node {$0,1$} ()
+    %--------------------------------------------------------    
+    (q10) edge [loop below]    node {$0$}   ()
+    (q10) edge                 node {$1$}   (q11)
+    
+    (q11) edge [bend left=30]  node {$0$}   (q10)
+    (q11) edge                 node {$1$}   (q12)
+    
+    (q12) edge                 node {$0$}   (q13)
+    (q12) edge [loop above]    node {$1$}   ()
+
+    (q13) edge [loop above]    node {$0,1$} ()
+    ;
+
+  \end{tikzpicture}
+\end{center}
