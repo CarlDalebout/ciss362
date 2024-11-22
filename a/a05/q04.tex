@@ -1,0 +1,29 @@
+Regular Expression: $D = \{\beta(\beta\beta)^*(\alpha\alpha)^*\}$
+
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial]   (q0) at (0,0) {$q_0$};
+    \node[state,accepting] (q1) at (2,0) {$q_1$};
+    \node[state]           (q2) at (4,0) {$q_2$};
+    \node[state,accepting] (q3) at (6,0) {$q_3$};
+    \node[state]           (q4) at (8,0) {$q_4$};
+    
+    \path[->]
+    (q0) edge [bend right=45] node {$\alpha$}       (q4)
+    (q0) edge [bend left=15]  node {$\beta$}        (q1)
+    
+    (q1) edge                 node {$\alpha$}       (q2)
+    (q1) edge [bend left=15]  node {$\beta$}        (q0)
+    
+    (q2) edge [bend left=15]  node {$\alpha$}       (q3)
+    (q2) edge [bend right=45] node {$\beta$}        (q4)
+    
+    (q3) edge [bend left=15]  node {$\alpha$}       (q2)
+    (q3) edge                 node {$\beta$}        (q4)
+    
+    (q4) edge [loop right]    node {$\alpha,\beta$} ()
+    ;
+    
+  \end{tikzpicture}
+\end{center}
