@@ -1,0 +1,29 @@
+(a.) %{01, 001, 010}^{*}
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+
+    \node[state,initial,accepting] (q0)  at (0, 0)  {$q_0$};
+    \node[state]                   (q1)  at (2, 0)  {$q_1$};
+    \node[state]                   (q2)  at (4, 0)  {$q_2$};
+    \node[state,accepting]         (q3)  at (6, 0)  {$q_3$};
+    \node[state,accepting]         (q4)  at (2, 2)  {$q_4$};
+    \node[state,accepting]         (q5)  at (2, 4)  {$q_5$};
+
+    \path[->]
+    (q0) edge                 node {$0$}        (q1)
+    
+    (q1) edge                 node {$0$}        (q2)
+    (q1) edge [left]          node {$1$}        (q4)
+    
+    (q2) edge                 node {$1$}        (q3)
+    
+    (q3) edge [bend left=45]  node {$\epsilon$} (q0)
+    
+    (q4) edge [left]          node {$0$}        (q5)
+    (q4) edge [bend right=45] node {$\epsilon$} (q0)
+    
+    (q5) edge [bend right=45] node {$\epsilon$} (q0)
+    ;
+    
+  \end{tikzpicture}
+\end{center}
