@@ -4,8 +4,8 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
-#include "src/STL_util.h"
-#include "src/DFA.h"
+#include "../src/STL_util.h"
+#include "../src/DFA.h"
 
 int main()
 {
