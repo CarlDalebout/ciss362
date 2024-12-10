@@ -1,5 +1,6 @@
 #ifndef STL_UTIL_H
 #define STL_UTIL_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,7 +9,6 @@
 #include <unordered_map>
 #include <set>
 #include <algorithm>
-
 
 //=============================================================================
 // Prototypes
@@ -29,36 +29,48 @@
 //                            const std::unordered_map< X, Y > &       (Done),
 //                            const std::unordered_set< X > &          (Done)
 //
-// * set membership
+//-----------------------------------------------------------------------------
+// * set membership (Done)
+//-----------------------------------------------------------------------------
 // If C is a container and e is an element, use one of the following for
 // membership check:
 // has< T, S > (C, e)
 // is_member< S, T >(e, C) where T is a container of S-values and
 // T::find(const S &) is defined
 // 
-// * set union
-// If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
-// X |= Y // X = X union with Y
-// Z = X | Y // Z = X union with Y
-// (See also std::set_union)
-//
-// * set intersection
-// If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
-// X &= Y
-// Z = X & Y
-// (See also C++ std::set_intersection)
-//
+//-----------------------------------------------------------------------------
 // * set difference
+//-----------------------------------------------------------------------------
 // If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
 // X -= Y
 // Z = X - Y
 // (See also C++ std::set_difference)
 //
+//-----------------------------------------------------------------------------
+// * set union
+//-----------------------------------------------------------------------------
+// If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
+// X |= Y // X = X union with Y
+// Z = X | Y // Z = X union with Y
+// (See also std::set_union)
+//
+//-----------------------------------------------------------------------------
+// * set intersection
+//-----------------------------------------------------------------------------
+// If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
+// X &= Y
+// Z = X & Y
+// (See also C++ std::set_intersection)
+//
+//-----------------------------------------------------------------------------
 // * cross product
+//-----------------------------------------------------------------------------
 // If X, Y, Z are containers of type std::set< T >, std::unordered_set< T >
 // Z = crossprod(X, Y)
 //
+//-----------------------------------------------------------------------------
 // * powerset
+//-----------------------------------------------------------------------------
 // If X, Z are containers of type of std::set< T >, std::unordered_set< T >
 // Z = powset(X)
 //

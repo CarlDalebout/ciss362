@@ -26,24 +26,46 @@ class NFA
       delta_(delta)
     {}
       
-    NFA(const DFA<S, T> & x)
-    {
-      std::cout << x.alpha() << std::endl;
-      alphabet_ = x.alpha();
-    }
+    // NFA(const DFA<S, T> & x)
+    // {
+    //   alphabet_ = x.alpha();
+    //   states_ = x.states();
+    //   start_state_ = x.start_states();
+    //   accepting_states_ = x.acceptint_states();
+    //   delta_ = x.delta();
+    // }
+
+    //-----------------------------------------------------------------------------
+    //  Getter Functions
+    //-----------------------------------------------------------------------------
+    const std::unordered_set<S>& alpha() const { return alphabet_; }
+    const std::unordered_set<T>& states() const { return states_; }
+    const T& start_states() const { return start_state_; }
+    const std::unordered_set<T>& accepting_states() const { return accepting_states_; }
+    const std::unordered_map<std::pair<T, S>, T> & delta() const { return delta_; }
+
+    //-----------------------------------------------------------------------------
+    // Setter Functions
+    //-----------------------------------------------------------------------------
+    void alpha(const std::unordered_set<S>& alphabet) { alphabet_ = alphabet; }
+    void states(const std::unordered_set<T>& states) { states_ = states; }
+    void start_states(const T& start_state) { start_state_ = start_state; }
+    void accepting_states(const std::unordered_set<T>& accepting_states) { accepting_states_ = accepting_states; }
+    void delta(const std::unordered_map<std::pair<T, S>, T> & delta) { delta_ = delta; }
 
     bool operator()(const std::vector<S>& word) const 
     {
       T current_state = start_state_;  // Start at the initial state
 
         // Process each symbol in the word
-        for (const auto& symbol : word) {
-            // Find the next state based on current state and input symbol
-            auto transition = delta_.find({current_state, symbol});
-            if (transition == delta_.end()) {
-                return false;  // No transition found, the word is rejected
-            }
-            current_state = transition->second;  // Move to the next state
+        for (const auto& symbol : word) 
+        {
+          // Find the next state based on current state and input symbol
+          auto transition = delta_.find({current_state, symbol});
+          if (transition == delta_.end()) {
+              return false;  // No transition found, the word is rejected
+          }
+          current_state = transition->second;  // Move to the next state
         }
 
         // The word is accepted if the final state is in the accepting states
@@ -81,7 +103,7 @@ class NFA
     //   std::vector<S> temp = word;
     //   T current_state = start_state_;  // Start at the initial state
     //   std::cout << temp << std::endl;  // Print out the current word
-
+    //
     //     // Process each symbol in the word
     //     while(temp.size() > 0) 
     //     {
@@ -93,7 +115,7 @@ class NFA
     //       }
     //       current_state = transition->second;  // Move to the next state
     //     }
-
+    //
     //     // The word is accepted if the final state is in the accepting states
     //     return accepting_states_.count(current_state) > 0;
     // }
