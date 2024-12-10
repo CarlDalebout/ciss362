@@ -1,5 +1,5 @@
-#ifndef DFA_H
-#define DFA_H
+#ifndef NFA_H
+#define NFA_H
 
 #include <iostream>
 #include <string>
@@ -8,12 +8,13 @@
 #include <unordered_set>
 #include <unordered_map>
 #include "STL_util.h"
+#include "DFA.h"
 
 template < typename S, typename T>
-class DFA
+class NFA
 {
   public:
-    DFA(const std::unordered_set<S> & s, 
+    NFA(const std::unordered_set<S> & s, 
         const std::unordered_set<T> & q, 
         T & q0, 
         const std::unordered_set<T> & f, 
@@ -24,20 +25,12 @@ class DFA
       accepting_states_(f),
       delta_(delta)
     {}
-
-    // Getter functions
-    const std::unordered_set<S>& alpha() const { return alphabet_; }
-    const std::unordered_set<T>& getStates() const { return states_; }
-    const T& getStartState() const { return start_state_; }
-    const std::unordered_set<T>& getAcceptingStates() const { return accepting_states_; }
-    const std::unordered_map<std::pair<T, S>, T> & getTransitionFunction() const { return delta_; }
-
-    // Setter functions
-    void alpha(const std::unordered_set<S>& alphabet) { alphabet_ = alphabet; }
-    void setStates(const std::unordered_set<T>& states) { states_ = states; }
-    void setStartState(const T& start_state) { start_state_ = start_state; }
-    void setAcceptingStates(const std::unordered_set<T>& accepting_states) { accepting_states_ = accepting_states; }
-    void setTransitionFunction(const std::unordered_map<std::pair<T, S>, T> & delta) { delta_ = delta; }
+      
+    NFA(const DFA<S, T> & x)
+    {
+      std::cout << x.alpha() << std::endl;
+      alphabet_ = x.alpha();
+    }
 
     bool operator()(const std::vector<S>& word) const 
     {
@@ -88,6 +81,7 @@ class DFA
     //   std::vector<S> temp = word;
     //   T current_state = start_state_;  // Start at the initial state
     //   std::cout << temp << std::endl;  // Print out the current word
+
     //     // Process each symbol in the word
     //     while(temp.size() > 0) 
     //     {
@@ -99,11 +93,11 @@ class DFA
     //       }
     //       current_state = transition->second;  // Move to the next state
     //     }
-    //
+
     //     // The word is accepted if the final state is in the accepting states
     //     return accepting_states_.count(current_state) > 0;
     // }
-  
+
   private:
     std::unordered_set<S>                   alphabet_;          // Set of input symbols
     std::unordered_set<T>                   states_;            // Set of states

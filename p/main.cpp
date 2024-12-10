@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "src/STL_util.h"
 #include "src/DFA.h"
+#include "src/NFA.h"
 
 int main()
 {
@@ -33,6 +34,7 @@ int main()
   delta[{q2, b}] = q2;
 
   DFA< S_t, Q_t > M(S, Q, q0, F, delta);
+  NFA< S_t, Q_t > nfaM(M);
 
   std::list< S_t > w {a, b, a, a};
   std::cout << M(w) << '\n'; // M(w) is true if M accepts abaa
