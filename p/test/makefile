@@ -1,6 +1,6 @@
 
 build:
-	g++ *.cpp
+	clear ; g++ test.cpp
 
 r:
 	./a.out
