@@ -1,0 +1,126 @@
+
+\textsc{Instructions}
+
+In \verb!main.tex! change the John Doe in
+\begin{console}
+\renewcommand\AUTHOR{John Doe}
+\end{console}
+to your fullname.
+In the bash shell, execute \lq\lq \verb!make!" to recompile \verb!main.pdf!.
+Execute \lq\lq \verb!make v!" to view \verb!main.pdf!.
+
+For each question, you'll see boxes for you to fill.
+You write your answers in \verb!main.tex! file.
+For small boxes, if you see
+\begin{console}[frame=single=single,fontsize=\small]
+1 + 1 = \answerbox{}.
+\end{console}
+you do this:
+\begin{console}[frame=single=single,fontsize=\small]
+1 + 1 = \answerbox{2}.
+\end{console}
+\verb!answerbox! will also appear in
+\lq\lq true/false" and \lq\lq multiple-choice"
+questions.
+
+For longer answers that needs typewriter font, if you see
+\begin{console}[frame=single=single, fontsize=\small]
+Write a C++ statement that declares an integer variable name x.
+\begin{answercode}
+\end{answercode}
+\end{console}
+you do this:
+\begin{console}[frame=single=single, fontsize=\small]
+Write a C++ statement that declares an integer variable name x.
+\begin{answercode}
+int x;
+\end{answercode}
+\end{console}
+\verb!answercode! will appear in questions asking for
+code, algorithm, and program output.
+In this case, indentation and spacing is significant.
+For program output, I do look at spaces and newlines.
+
+For long answers (not in typewriter font) if you see
+\begin{console}[frame=single=single, fontsize=\small]
+What is the color of the sky?
+\begin{answerlong}
+\end{answerlong}
+\end{console}
+you can write
+\begin{console}[frame=single=single, fontsize=\small]
+What is the color of the sky?
+\begin{answerlong}
+The color of the sky is blue.
+\end{answerlong}
+\end{console}
+For students beyond 245: You can put \LaTeX\ commands in \verb!answerlong!.
+
+A question that begins with \lq\lq T or F or M"
+requires you to identify whether it is true or
+false, or meaningless.
+\lq\lq Meaningless" means something's wrong with the statement and
+it is not well-defined.
+Something like \lq\lq $1 +_2$" or \lq\lq $\{2\}^{\{3\}}$" is not
+well-defined.
+Therefore a question such as
+\lq\lq Is $42 = 1 +_2$ true or false?" or
+\lq\lq Is $42 = \{2\}^{\{3\}}$ true or false?"
+does not make sense.
+\lq\lq Is $P(42) = \{42\}$ true or false?" is meaningless because $P(X)$
+is only defined if $X$ is a set.
+For \lq\lq Is 1 + 2 + 3 true or false?", \lq\lq 1 + 2 + 3" is well--defined but
+as a
+\lq\lq numerical expression", not as a \lq\lq proposition", i.e.,
+it cannot be true or false.
+Therefore \lq\lq Is 1 + 2 + 3 true or false?" is also not a well-defined
+question.
+
+When writing results of computations, make sure it's simplified.
+For instance write $2$ instead of $1 + 1$.
+When you write down sets,
+if the answer is $\{1\}$, I do not
+want to see $\{1, 1\}$.
+
+When writing a counterexample, always write the simplest.
+
+Once you are done, execute \lq\lq\verb!make tar!" to get a tar file.
+Email that to me.
+
+Here are some examples (see \verb!instructions.tex! for details):
+
+\begin{enumerate}
+
+ \item \tf: 1 + 1 = 2 \dotfill\answerbox{T}
+ 
+ \item \tf: 1 + 1 = 3 \dotfill\answerbox{F}
+ 
+ \item \tf: $1 +^2 =$ \dotfill\answerbox{M}
+ 
+ \item $1 + 2 =$ \answerbox{3}
+ 
+ \item Write a C++ statement to declare an integer variable named
+ \verb!x!.
+ \begin{answercode}
+int x;
+ \end{answercode}
+
+ \item Solve $x^2 - 1 = 0$.
+ \begin{answerlong}
+ Since $x^2 - 1 = (x-1)(x+1)$, $x^2 - 1 = 0$ implies $(x-1)(x+1)=0$.
+ Therefore $x - 1 = 0$ or $x = -1$.
+ Hence $x = 1$ or $x = -1$.
+ \end{answerlong}
+
+ \item
+ \begin{mcq}
+ {Which is true?}{\answerbox{C}}
+ {$1+1=0$}
+ {$1+1=1$}
+ {$1+1=2$}
+ {$1+1=3$}
+ {$1+1=4$}
+ \end{mcq}
+
+
+\end{enumerate}

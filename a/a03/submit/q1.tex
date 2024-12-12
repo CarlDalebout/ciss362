@@ -1,0 +1,76 @@
+We will prove that if $x \neq \ep$, then $|x| \neq 0$.
+\begin{align*}
+x &\neq \ep \\
+\THEREFORE x &= x'x'' \text{ for some } x' \in \Sigma, x'' \in \Sigma^*
+           & & \text{by \answerbox{?}} \\
+\THEREFORE |x| &= |x' x''| \text{ for some } x' \in \Sigma, x'' \in \Sigma^* 
+           \\ 
+\THEREFORE |x| &= 1 + |x''| \text{ for some } x' \in \Sigma, x'' \in \Sigma^*
+           & & \text{by \answerbox{?}} \\
+\THEREFORE |x| &\geq 1 \text{ for some } x' \in \Sigma, x'' \in \Sigma^* 
+\end{align*}
+This implies that $|x| \geq 1$ and therefore $|x| \neq 0$.
+
+Therefore we conclude that if $|x| = 0$, then $x = \ep$. \qed
+\\
+
+\textsc{Note.}
+The less formal (but equally rigorous) way to write the proof is as follows:
+
+\textit{
+Suppose $x \neq \ep$, then by \answerbox{?}, $x = x'x''$ 
+for some $x' \in \Sigma$ and $x'' \in \Sigma^*$.
+In that case
+\begin{align*}
+|x| 
+&= |x' \cdot x''| \\ 
+&= 1 + |x''| & & \text{ by \answerbox{?}}    \\
+&\geq 1
+\end{align*}
+which implies that $|x| \neq 0$.
+}
+
+\textsc{Note.}
+Some basic facts are implicitly used.
+\begin{enumerate}
+\item If $x = y$ then $|x|= |y|$. 
+\item If $n \geq 0$ then $n + 1 \geq 1$.
+\item If $n \geq 1$ then $ n \neq 0$.
+\item $\exists x(P)$ is the same as $P$ if
+$P$ does not contain variables.
+For instance \lq\lq there exists an $x$ such that
+the sky is blue'' is the same as
+\lq\lq the sky is blue''.
+(Check existential generalization in your discrete math book.)
+\end{enumerate}
+
+\textsc{Note.}
+Note that in this case instead of proving $P \implies Q$,
+I prefer to prove $\lnot Q \implies \lnot P$.
+Of course the two statements are the same, i.e.;
+\[
+(P \implies Q) \equiv (\lnot Q \implies \lnot P)
+\]
+How do you decide which one to prove: the left or the right?
+
+To prove $P \implies Q$ directly means that I have to start with $P$.
+I would then look at all the facts that begins with $P$.
+
+If I want to prove $\lnot Q \implies \lnot P$, I would have to 
+look at all the facts that I know that begins with $\lnot Q$.
+
+I would compare the two above and see which one gives me more
+facts to work with.
+Sometimes it's obvious.
+Sometimes it's not.
+You might have a red herring where one gives you more facts, but
+they end up (after a few steps of deduction) leading up to a deadend.
+Sometimes either way work fine.
+
+For the above case, it comes down to which of the following gives me
+more tools to work with:
+\begin{enumerate}
+\item $|x| = 0$, or
+\item $x \neq \ep$
+\end{enumerate}
+

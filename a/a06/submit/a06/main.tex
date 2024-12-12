@@ -1,0 +1,181 @@
+\input{thispreamble.tex}
+
+\renewcommand\AUTHOR{John Doe}
+
+\begin{document}
+\topmatter
+
+\textsc{Objectives}
+\begin{itemize}
+\li Design DFAs
+\li Design NFAs.
+\end{itemize}
+
+
+As before modify the files
+\verb!q01.tex! for Q1,
+\verb!q02.tex! for Q2, etc.
+Tar and gzip your directory and email to \verb!yliow.submit@gmail.com!
+using your college email account.
+Use subject line \lq\lq \verb!ciss362 a06!".
+
+\begin{myenum}
+\li Sipser 1.17. Q1
+\li Sipser 1.18. Q2. Solutions for (a)-(d) provided.
+\li Sipser 1.19. Q3
+\li Sipser 1.20. DIY. First solve it (use simplest examples). Then check the solution below. 
+\li Sipser 1.21. Q4
+\li Sipser 1.22. Q5
+\li Sipser 1.23. Try it first. Then study the solution in the book.
+\li Sipser 1.28. Q6
+\li Sipser 1.31. Q7
+
+\end{myenum}
+
+%------------------------------------------------------------------------------
+\newpage
+\textsc{How to draw a state diagram}
+
+Here's an example showing you how to draw the elements of a state diagram.
+Also, look at the solution to 1.3 below.
+
+\begin{center}
+  \begin{tikzpicture}[shorten >=1pt,>=triangle 60,double distance=2pt,node distance=2cm,auto,initial text=]
+    
+    \node[state,initial]   (q0) at (0, 0) {$q_0$};
+    \node[state]           (q1) at (4, 0) {$q_1$};
+    \node[state,accepting] (q2) at (8, 0) {$q_2$};
+    \node[state]           (q3) at (0,-4) {$q_3$};
+    \node[state]           (q4) at (4,-4) {$q_4$};
+
+    \node[state]           (q5) at (12, 0) {$q_5$};
+    \node[state]           (q6) at (12,-4) {$q_6$};
+
+    \path[->]
+    (q0) edge                node {$1$} (q1)    
+    (q1) edge [bend left=15] node {$0$} (q2)
+    (q0) edge [left]  node {$\alpha$} (q3)
+    (q1) edge [right] node {$\beta$}  (q4)
+    (q1) edge [loop above]   node {$1$} (q1)
+    (q2) edge [loop below]   node {$0$} ()
+    (q2) edge [bend left=15] node {$1$} (q1)
+    (q3) edge [loop right]   node {$0,1$} ()
+    (q4) edge [loop left]    node {$2,3$} ()
+    (q5) edge [right, bend left=30]    node {$\gamma$} (q6)
+    (q5) edge [right, bend left=60]    node {$\ep$}    (q6)
+    (q5) edge [left, bend right=30]    node {$\delta$} (q6)
+    ;
+  \end{tikzpicture}
+\end{center}
+
+For more information on drawing state diagrams go to my tutorials and
+look for \verb!latex-automata.pdf!:
+\begin{center}
+{\small \url{https://drive.google.com/file/d/1AeE-P0WNvQlitzPDxQpGE8bMR9Yc9gMW}}
+\end{center}
+Let me know if you have any questions about drawing state diagram.
+
+%------------------------------------------------------------------------------
+\newpage
+Q1. Sipser 1.17.
+
+\begin{myenum}
+\item Design an NFA $N$ that accepts the language $\{01, 001, 010\}^*$.
+\item Convert $N$ to an equivalent DFA using the powerset construction.
+\end{myenum}
+
+\textsc{Solution}.
+
+\input{q01.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q2. Sipser 1.18. Solutions for (a)-(d) provided.
+
+Write down regular expressions generating the following languages\
+where $\Sigma = \{0, 1\}$
+\begin{myenum}
+\item $\{w \mid w \text{ begins with 1 and ends with 0}\}$
+\item $\{w \mid w \text{ contains at least three $1$s}\}$
+\item $\{w \mid w \text{ contains sbstring 0101}\}$
+\item $\{w \mid w \text{ has length at least 3 and its third symbol is a 0}\}$
+\item $\{w \mid w \text{ start with 0 and has odd length, or starts with 1 and has even length}\}$
+\item $\{w \mid w \text{ does not contain the substring 110}\}$
+\item $\{w \mid \text{the length of $w$ is at most 5}\}$
+\item $\{w \mid w \text{is any string except 11 and 111}\}$
+\item $\{w \mid \text{every odd position of $w$ is a 1}\}$
+\item $\{w \mid w \text{ contains at least two 0s and at most one 1}\}$
+\item $\{\ep, 0\}$
+\item $\{w \mid w \text{ contains an even number of 0, or contains exactly two 1s}\}$
+\item $\{\}$
+\item $\{w \mid w \neq \ep\}$
+\end{myenum}
+
+\textsc{Solution}.
+
+\input{q02.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q3. Sipser 1.19.
+
+\textsc{Solution}.
+
+\input{q03.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+
+Solution to Sipser 1.20:
+
+\begin{myenum}
+\item Members: $\ep$, $ab$. Nonmembers: $ba$, $bab$.
+\item Members: $ab$, $abab$. Nonmembers: $\ep$, $a$.
+\item Members: $\ep$, $a$. Nonmembers: $ab$, $ba$.
+\item Members: $\ep$, $aaa$. Nonmembers: $a$, $b$.
+\item Members: $aba$, $aaba$. Nonmembers: $\ep$, $a$.
+\item Members: $aba, bab$. Nonmembers: $\ep, a$.
+\item Members: $b, ab$. Nonmembers: $\ep$, $a$.
+\item Members: $a$, $ab$. Nonmembers: $\ep$, $b$.
+\end{myenum}
+
+%------------------------------------------------------------------------------
+\newpage
+Q4. Sipser 1.21.
+
+\textsc{Solution}.
+
+\input{q04.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q5. Sipser 1.22.
+
+\textsc{Solution}.
+
+\input{q05.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q6. Sipser 1.28.
+
+\textsc{Solution}.
+
+\input{q06.tex}
+
+%------------------------------------------------------------------------------
+\newpage
+Q7. Sipser 1.31.
+
+Suppose $L = L(M)$ where $M = (\Sigma, Q, q_0, F, \delta).$
+
+\begin{myenum}
+\item Describe informally how to design a DFA that accepts $L^R$.
+\item Describe formally a DFA, $M^R$, such that $L(M^R) = L^R$.
+\end{myenum}
+
+\textsc{Solution}.
+
+\input{q07.tex}
+
+\end{document}
