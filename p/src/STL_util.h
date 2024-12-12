@@ -114,6 +114,9 @@ namespace std
   // template < typename T, typename LESS >
   // std::string to_string(const std::unordered_set< T > & x,
   //                       const LESS & less);
+
+  template < typename S, typename T >
+  std::string to_string(const std::unordered_multimap< S, T > & x);
   
   template <typename T >
   std::string to_string(const std::set< T > & x);
@@ -139,9 +142,12 @@ namespace std
   template < typename T >
   struct hash< std::unordered_set< T > >;
   
-  // template < typename S, typename T, typename H >
-  // struct hash< std::unordered_map< S, T, H > >;
+  template < typename S, typename T >
+  struct hash< std::unordered_map< S, T> >;
   
+  template < typename S, typename T >
+  struct hash< std::unordered_multiset< S, T > >;
+
   template < typename S >
   struct hash< std::set< S > >;
 }
@@ -257,12 +263,13 @@ template < typename T >
 std::ostream & operator<<(std::ostream & cout, const std::list< T > & x);
 
 template < typename T >
-std::ostream & operator<<(std::ostream & cout,
-                          const std::unordered_set< T > & x);
+std::ostream & operator<<(std::ostream & cout, const std::unordered_set< T > & x);
 
 template < typename S, typename T >
-std::ostream & operator<<(std::ostream & cout,
-                          const std::unordered_map< S, T > & x);
+std::ostream & operator<<(std::ostream & cout, const std::unordered_map< S, T > & x);
+
+template < typename S, typename T >
+std::ostream & operator<<(std::ostream & cout, const std::unordered_multimap< S, T > & x);
 
 template < typename T >
 std::ostream & operator<<(std::ostream & cout, const std::set< T > & x);
@@ -357,6 +364,20 @@ namespace std
     return ret;
   }
 
+  template < typename S, typename T >
+  std::string to_string(const std::unordered_multimap< S, T > & x)
+  {
+    std::string ret = "{";
+    std::string dir = "";
+  
+    for (auto& it : x)
+    {
+      ret += (dir + (to_string(it.first) + ":" + to_string(it.second))); dir = ", ";
+    }
+    ret += '}';
+    return ret;
+  }
+
   template <typename T >
   std::string to_string(const std::set< T > & x)
   {
@@ -370,6 +391,7 @@ namespace std
     ret += '}';
     return ret;
   }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -417,9 +439,25 @@ namespace std
     }
   };
 
-  // template < typename S, typename T, typename H >
-  // struct hash< std::unordered_map< S, T, H > >
-  // {};
+  template < typename S, typename T >
+  struct hash< std::unordered_map< S, T > >
+  {
+    size_t operator()(const std::unordered_map<S, T> & x) const 
+    {
+      std::hash< std::string > hasher;
+      return hasher(std::to_string(x));
+    }
+  };
+
+  template < typename S, typename T >
+  struct hash< std::unordered_multiset< S, T > >
+  {
+    size_t operator()(const std::list< T > & x) const
+    {
+      std::hash< std::string > hasher;
+      return hasher(std::to_string(x));
+    }
+  };
 
   template < typename S >
   struct hash< std::set< S > >
@@ -608,8 +646,14 @@ std::ostream & operator<<(std::ostream & cout,
 }
 
 template < typename S, typename T >
-std::ostream & operator<<(std::ostream & cout,
-                          const std::unordered_map< S, T > & x)
+std::ostream & operator<<(std::ostream & cout, const std::unordered_map< S, T > & x)
+{
+  cout << std::to_string(x);
+  return cout;
+}
+
+template < typename S, typename T >
+std::ostream & operator<<(std::ostream & cout, const std::unordered_multimap< S, T > & x)
 {
   cout << std::to_string(x);
   return cout;

@@ -3,8 +3,12 @@
 
 #include <iostream>
 #include <string>
-#include "NFA.h"
 #include "STL_util.h"
+#include "NFA.h"
+
+// Forward declare NFA
+template <typename S, typename T>
+class NFA;
 
 class REGEX
 {

@@ -10,6 +10,10 @@
 #include "NFA.h"
 #include "STL_util.h"
 
+// Forward declare NFA
+template <typename S, typename T>
+class NFA;
+
 template < typename S, typename T>
 class DFA
 {
@@ -43,10 +47,10 @@ class DFA
       delta_            = x.delta();
     }
  
-    // DFA(const NFA<S, T> & x)
-    // {
-    //   std::cout << "incomplete\n";
-    // }
+    DFA(const NFA<S, T> & x)
+    {
+      std::cout << "incomplete\n";
+    }
 
     //-----------------------------------------------------------------------------
     //  Getter Functions
@@ -89,14 +93,13 @@ class DFA
     {
       std::list<S> temp = word;
       T current_state = start_state_;  // Start at the initial state
-      // std::cout << temp << std::endl;
       
       // Process each symbol in the word
       while(temp.size() > 0)
       {
-        // std::cout << std::pair<T, std::list<S>>{current_state, temp} << std::endl;
         S symbol = temp.front();
         temp.pop_front();
+
         // Find the next state based on current state and input symbol
         auto transition = delta_.find({current_state, symbol});
         if (transition == delta_.end()) {
@@ -106,9 +109,30 @@ class DFA
       }
 
       // The word is accepted if the final state is in the accepting states
-      // std::cout << std::pair<T, std::list<S>>{current_state, temp} << std::endl;
       return accepting_states_.count(current_state) > 0;
     }
+    
+    // std::vector<std::pair<T, std::vector<S>>> IDs(const std::vector<S>& word) const
+    // {
+    //   std::vector<std::pair<T, std::vector<S>>> ret;
+    //   std::vector<S> temp = word;
+    //   T current_state = start_state_;  // Start at the initial state
+    //   std::cout << temp << std::endl;  // Print out the current word
+    //     // Process each symbol in the word
+    //     while(temp.size() > 0) 
+    //     {
+    //       S symbol = temp[0];
+    //       // Find the next state based on current state and input symbol
+    //       auto transition = delta_.find({current_state, symbol});
+    //       if (transition == delta_.end()) {
+    //           return false;  // No transition found, the word is rejected
+    //       }
+    //       current_state = transition->second;  // Move to the next state
+    //     }
+    //
+    //     // The word is accepted if the final state is in the accepting states
+    //     return accepting_states_.count(current_state) > 0;
+    // }
 
     bool complement(const std::list<S>& word) const
     {
@@ -153,43 +177,31 @@ class DFA
 
       //getting newF
       std::unordered_set< T > newF;
-      for(auto& it : accepting_states_)
-        for(auto& jt : x.accepting_states())
+      std::unordered_set< T > xaccepting_states = x.accepting_states();
+      for(auto& it : states_)
+        for(auto& jt : x.states())
         {
-          newF.insert(it+jt);
+
+          if((accepting_states_.find(it) != accepting_states_.end()) || (xaccepting_states.find(jt) != xaccepting_states.end()))
+            newF.insert(it+jt);
         }
 
       //getting newDelta
+      std::unordered_map<std::pair<T, S>, T>  xdelta_ = x.delta();
       std::unordered_map<std::pair<T, S>, T>  newDelta;
-      std::cout << delta_ << std::endl;
-      std::cout << x.delta() << std::endl;
-      
 
-      // DFA<S, T> ret(newS, newQ, newInit, newF, newDelta);
-      return *this;
+      for(auto& symbol : alphabet_)
+        for(auto& it : states_)
+          for(auto& jt : x.states())
+          {
+            auto tran0 = delta_.find({it, symbol});
+            auto tran1 = xdelta_.find({jt, symbol});
+            newDelta[{(tran0->first.first + tran1->first.first), symbol}] = (tran0->second + tran1->second);
+          }
+
+      DFA<S, T> ret(newS, newQ, newInit, newF, newDelta);
+      return ret;
     }
-
-    // std::vector<std::pair<T, std::vector<S>>> IDs(const std::vector<S>& word) const
-    // {
-    //   std::vector<std::pair<T, std::vector<S>>> ret;
-    //   std::vector<S> temp = word;
-    //   T current_state = start_state_;  // Start at the initial state
-    //   std::cout << temp << std::endl;  // Print out the current word
-    //     // Process each symbol in the word
-    //     while(temp.size() > 0) 
-    //     {
-    //       S symbol = temp[0];
-    //       // Find the next state based on current state and input symbol
-    //       auto transition = delta_.find({current_state, symbol});
-    //       if (transition == delta_.end()) {
-    //           return false;  // No transition found, the word is rejected
-    //       }
-    //       current_state = transition->second;  // Move to the next state
-    //     }
-    //
-    //     // The word is accepted if the final state is in the accepting states
-    //     return accepting_states_.count(current_state) > 0;
-    // }
 
   private:
     std::unordered_set<S>                   alphabet_;          // Set of input symbols
@@ -202,11 +214,11 @@ class DFA
 template < typename S, typename T >
 std::ostream & operator<<(std::ostream & cout, const DFA<S, T> & x)
 {
-  cout << x.alpha() << std::endl;
-  cout << x.states() << std::endl;
-  cout << x.start_state() << std::endl;
-  cout << x.accepting_states() << std::endl;
-  cout << x.delta() << std::endl;
+  cout << "alpha: "            << x.alpha()            << std::endl;
+  cout << "states: "           << x.states()           << std::endl;
+  cout << "start_state: "      << x.start_state()      << std::endl;
+  cout << "accepting_states: " << x.accepting_states() << std::endl;
+  cout << "delta: "            << x.delta()            << std::endl;
   return cout;
 }
 

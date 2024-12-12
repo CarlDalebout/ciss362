@@ -14,49 +14,79 @@ int main()
   typedef std::string S_t;
   typedef std::pair< Q_t, S_t > Q_t_S_t;
   typedef std::unordered_map< Q_t_S_t, Q_t > D_t;
+  typedef std::unordered_multimap< Q_t_S_t, Q_t > MD_t;
   
   S_t a = "a";
   S_t b = "b";
+  S_t e = "epsilon";
+
   Q_t q0 = "q0";
   Q_t q1 = "q1";
   Q_t q2 = "q2";
+  Q_t q3 = "q3";
+  Q_t q4 = "q4";
+  Q_t q5 = "q5";
   
+  //=========================================================
+  //Standard Sigma initilization
+  //=========================================================
   std::unordered_set< S_t > S {a, b};
-  std::unordered_set< Q_t > Q0 {q0, q1, q2};
-  std::unordered_set< Q_t > Q1 {q0, q1};
-  std::unordered_set< Q_t > F0 {q1, q2};
-  std::unordered_set< Q_t > F1 {q1};
 
-  D_t delta0;
-  delta0[{q0, a}] = q1;
-  delta0[{q0, b}] = q0;
-  
-  delta0[{q1, a}] = q1;
-  delta0[{q1, b}] = q2;
-  
-  delta0[{q2, a}] = q2;
-  delta0[{q2, b}] = q2;
+  //=========================================================
+  //Nfa0 initilization
+  //=========================================================
+  std::unordered_set< Q_t > Q0 {q0};
+  std::unordered_set< Q_t > F0 {q0};
 
+  MD_t delta0;
+  delta0.insert({{q0, a}, q0});
   
+  NFA< S_t, Q_t > Nfa0(S, Q0, q0, F0, delta0);
   
-  D_t delta1;
-  delta1[{q0, a}] = q0;
-  delta1[{q0, b}] = q1;
+  //=========================================================
+  //Nfa1 initilization
+  //=========================================================
+  std::unordered_set< Q_t > Q1 {q0, q1, q2};
+  std::unordered_set< Q_t > F1 {q2};
+
+  MD_t delta1;
+  delta1.insert({{q0, b}, q1});
+
+  delta1.insert({{q1, a}, q2});
+  delta1.insert({{q1, b}, q1});
+
+  NFA< S_t, Q_t > Nfa1(S, Q1, q0, F1, delta1);
+
+  //=========================================================
+  //Dfa initilization
+  //=========================================================
+  std::unordered_set< S_t > Q {q0, q1}; // Q
+  std::unordered_set< S_t > F {q1}; // F
   
-  delta1[{q1, a}] = q1;
-  delta1[{q1, b}] = q1;
+  D_t delta; //delta
+  delta[{q0, a}] = q0;
+  delta[{q0, b}] = q1;
+  delta[{q1, a}] = q1;
+  delta[{q1, b}] = q0;
+
+  DFA< S_t, Q_t > M(S, Q, q0, F, delta);
 
 
-  DFA< S_t, Q_t >   M0(S, Q0, q0, F0, delta0);
-  DFA< S_t, Q_t >   M1(S, Q1, q0, F1, delta1);
-  DFA< S_t, Q_t>    M2(M0.intersection(M1));
+  NFA< S_t, Q_t > Nfa2(M);
 
-  NFA< S_t, Q_t > nfaM(S, Q0, q0, F0, delta0);
-
-  std::list< S_t > w {a, b, a, a};
-  std::cout << M0(w) << '\n'; // M(w) is true if M accepts abaa
-  std::cout << M0.complement(w) << '\n';
+  std::list< S_t > w0 {a, a, a};
+  std::list< S_t > w1 {b, b, a};
+  std::cout << Nfa0 << std::endl;
+  std::cout << Nfa0(w0) << '\n'; // M(w) is true if M accepts abaa
+  std::cout << Nfa0(w1) << '\n'; // M(w) is true if M accepts abaa
   
-  std::cout << nfaM(w) << '\n'; // M(w) is true if M accepts abaa
+  std::cout << Nfa1 << std::endl;
+  std::cout << Nfa1(w0) << '\n'; // M(w) is true if M accepts abaa
+  std::cout << Nfa1(w1) << '\n'; // M(w) is true if M accepts abaa
+  
+  std::cout << Nfa2 << std::endl;
+  std::cout << Nfa2(w0) << '\n'; // M(w) is true if M accepts abaa
+  std::cout << Nfa2(w1) << '\n'; // M(w) is true if M accepts abaa
+  
   return 0;
 }
